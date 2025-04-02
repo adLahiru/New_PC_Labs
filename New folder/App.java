@@ -1,5 +1,8 @@
 import java.util.ArrayList;
 
+/**
+ * Main class for the University Study Room Reservation System.
+ */
 class UniversityStudyRoomReservationSystemGroup_Found404 {
     public static void main(String args[]) {
         int displayWidth = 100;
@@ -13,6 +16,9 @@ class UniversityStudyRoomReservationSystemGroup_Found404 {
 
         ArrayList<Student> students = new ArrayList<>();
 
+        /**
+         * Create some students and study rooms, and start reservation handlers.
+         */
         // Create some students
         Student student1 = new Student("Alice", "S123", "2023", "Computer Science");
         Student student2 = new Student("Bob", "S124", "2023", "Mathematics");
@@ -42,16 +48,31 @@ class UniversityStudyRoomReservationSystemGroup_Found404 {
     }
 }
 
+/**
+ * Handles reservations for a specific study room.
+ */
 class ReservationHandler implements Runnable {
     private StudyRoom studyRoom;
     private ArrayList<Student> students = new ArrayList<>();
     private ArrayList<Student> reservedStudents = new ArrayList<>();
 
+    /**
+     * Constructor for ReservationHandler.
+     * 
+     * @param studyRoom The study room to manage reservations for.
+     * @param students  The list of students eligible for reservations.
+     */
     ReservationHandler(StudyRoom studyRoom, ArrayList<Student> students) {
         this.studyRoom = studyRoom;
         this.students = students;
     }
 
+    /**
+     * Adds a reservation for a student if the room is not full.
+     * 
+     * @param student The student to reserve the room for.
+     * @throws StudyRoomUnavailableException If the room is full.
+     */
     private void addReservation(Student student) throws StudyRoomUnavailableException {
         if (reservedStudents.size() < studyRoom.getCapacity()) {
             reservedStudents.add(student);
@@ -62,11 +83,19 @@ class ReservationHandler implements Runnable {
         }
     }
 
+    /**
+     * Frees a reservation for a student.
+     * 
+     * @param student The student whose reservation is to be freed.
+     */
     private void freeReservation(Student student) {
         reservedStudents.remove(student);
         System.out.println("Reservation freed for " + student.getName() + " in " + studyRoom.getRoomName());
     }
 
+    /**
+     * Runs the reservation handling logic in a separate thread.
+     */
     @Override
     public void run() {
         // Logic to handle reservation
@@ -94,12 +123,23 @@ class ReservationHandler implements Runnable {
     }
 }
 
+/**
+ * Represents a study room with specific attributes.
+ */
 class StudyRoom {
     private String roomName;
     private int capacity;
     private int roomNumber;
     private int reservedCount;
 
+    /**
+     * Constructor for StudyRoom.
+     * 
+     * @param roomName      The name of the study room.
+     * @param capacity      The maximum capacity of the study room.
+     * @param roomNumber    The unique number of the study room.
+     * @param reservedCount The current number of reservations.
+     */
     StudyRoom(String roomName, int capacity, int roomNumber, int reservedCount) {
         this.roomName = roomName;
         this.capacity = capacity;
@@ -107,29 +147,60 @@ class StudyRoom {
         this.reservedCount = reservedCount;
     }
 
+    /**
+     * Gets the name of the study room.
+     * 
+     * @return The name of the study room.
+     */
     public String getRoomName() {
         return roomName;
     }
 
+    /**
+     * Gets the capacity of the study room.
+     * 
+     * @return The capacity of the study room.
+     */
     public int getCapacity() {
         return capacity;
     }
 
+    /**
+     * Gets the room number of the study room.
+     * 
+     * @return The room number of the study room.
+     */
     public int getRoomNumber() {
         return roomNumber;
     }
 
+    /**
+     * Gets the current number of reservations.
+     * 
+     * @return The current number of reservations.
+     */
     public int getReservedCount() {
         return reservedCount;
     }
 }
 
+/**
+ * Represents a student with specific attributes.
+ */
 class Student {
     private String name;
     private String studentId;
     private String intake;
     private String department;
 
+    /**
+     * Constructor for Student.
+     * 
+     * @param name       The name of the student.
+     * @param studentId  The unique ID of the student.
+     * @param intake     The intake year of the student.
+     * @param department The department of the student.
+     */
     Student(String name, String studentId, String intake, String department) {
         this.name = name;
         this.studentId = studentId;
@@ -137,24 +208,52 @@ class Student {
         this.department = department;
     }
 
+    /**
+     * Gets the name of the student.
+     * 
+     * @return The name of the student.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Gets the student ID.
+     * 
+     * @return The student ID.
+     */
     public String getStudentId() {
         return studentId;
     }
 
+    /**
+     * Gets the intake year of the student.
+     * 
+     * @return The intake year of the student.
+     */
     public String getIntake() {
         return intake;
     }
 
+    /**
+     * Gets the department of the student.
+     * 
+     * @return The department of the student.
+     */
     public String getDepartment() {
         return department;
     }
 }
 
+/**
+ * Exception thrown when a study room is unavailable for reservation.
+ */
 class StudyRoomUnavailableException extends Exception {
+    /**
+     * Constructor for StudyRoomUnavailableException.
+     * 
+     * @param message The exception message.
+     */
     public StudyRoomUnavailableException(String message) {
         super(message);
     }
