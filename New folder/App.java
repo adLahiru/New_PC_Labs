@@ -3,15 +3,34 @@ import java.util.ArrayList;
 
 class UniversityStudyRoomReservationSystemGroup_Found404 {
     public static void main(String args[]) {
+        int displayWidth = 100;
+        String title = "University Study Room Reservation System";
+
+        System.out.print("-".repeat(displayWidth) + "\n|");
+        System.out.print(" ".repeat((displayWidth - title.length() - 2) / 2) + title);
+        System.out
+                .println(" ".repeat(displayWidth - 2 - title.length() - (displayWidth - title.length() - 2) / 2) + "|");
+        System.out.print("-".repeat(displayWidth) + "\n");
+
+        ArrayList<Student> students = new ArrayList<>();
+
+        // Create some students
+        Student student1 = new Student("Alice", "S123", "2023", "Computer Science");
+        Student student2 = new Student("Bob", "S124", "2023", "Mathematics");
+        Student student3 = new Student("Charlie", "S125", "2023", "Electrical");
+        students.add(student1);
+        students.add(student2);
+        students.add(student3);
+
         // Create a new study room
         StudyRoom studyRoom = new StudyRoom("Room A", 20, 101, 0);
         StudyRoom studyRoom2 = new StudyRoom("Room B", 2, 102, 0);
         StudyRoom studyRoom3 = new StudyRoom("Room C", 10, 103, 0);
 
         // Create a reservation handler
-        ReservationHandler reservationHandler = new ReservationHandler(studyRoom);
-        ReservationHandler reservationHandler2 = new ReservationHandler(studyRoom2);
-        ReservationHandler reservationHandler3 = new ReservationHandler(studyRoom3);
+        ReservationHandler reservationHandler = new ReservationHandler(studyRoom, students);
+        ReservationHandler reservationHandler2 = new ReservationHandler(studyRoom2, students);
+        ReservationHandler reservationHandler3 = new ReservationHandler(studyRoom3, students);
 
         // Start the reservation handler thread
         Thread reservationThread = new Thread(reservationHandler);
@@ -27,14 +46,16 @@ class UniversityStudyRoomReservationSystemGroup_Found404 {
 class ReservationHandler implements Runnable {
     private StudyRoom studyRoom;
     private ArrayList<Student> students = new ArrayList<>();
+    private ArrayList<Student> reservedStudents = new ArrayList<>();
 
-    ReservationHandler(StudyRoom studyRoom) {
+    ReservationHandler(StudyRoom studyRoom, ArrayList<Student> students) {
         this.studyRoom = studyRoom;
+        this.students = students;
     }
 
     private void addReservation(Student student) throws StudyRoomUnavailableException {
-        if (students.size() < studyRoom.getCapacity()) {
-            students.add(student);
+        if (reservedStudents.size() < studyRoom.getCapacity()) {
+            reservedStudents.add(student);
             System.out.println("Reservation added for " + student.getName() + " in " + studyRoom.getRoomName());
         } else {
             throw new StudyRoomUnavailableException(
@@ -42,10 +63,34 @@ class ReservationHandler implements Runnable {
         }
     }
 
+    private void freeReservation(Student student) {
+        reservedStudents.remove(student);
+        System.out.println("Reservation freed for " + student.getName() + " in " + studyRoom.getRoomName());
+    }
+
     @Override
     public void run() {
         // Logic to handle reservation
         System.out.println("Handling reservation for " + studyRoom.getRoomNumber() + " - " + studyRoom.getRoomName());
+        for (int i = 0; i < students.size(); i++) {
+            try {
+                addReservation(students.get(i));
+                Thread.sleep(1000);
+            } catch (StudyRoomUnavailableException e) {
+                System.out.println(e.getMessage());
+            } catch (InterruptedException e) {
+                System.out.println("Reservation interrupted for " + students.get(i).getName());
+            }
+        }
+        // Free up reservations after use
+        for (int i = 0; i < reservedStudents.size(); i++) {
+            freeReservation(reservedStudents.get(i));
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                System.out.println("Freeing reservation interrupted for " + reservedStudents.get(i).getName());
+            }
+        }
 
     }
 }
