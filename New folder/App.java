@@ -1,3 +1,43 @@
+
+/**
+ * University Study Room Reservation System (USRRS)
+ * 
+ * This system is designed to help students at the University of Moratuwa book 
+ * study rooms in the Educational Resources Center (ERC). It keeps track of room 
+ * availability, ensures fair access, and makes the reservation process smooth.
+ *
+ * --- Functional Requirements (What the System Does) ---
+ * 1. Study Room Management:
+ *    - Each study room has a unique number, seating capacity, and availability status.
+ *    - Students can view a list of all rooms and check which ones are available.
+ * 
+ * 2. Reservation and Cancellation:
+ *    - Students can book a study room by entering its number.
+ *    - If a room is already occupied, the system prevents double booking by throwing 
+ *      a StudyRoomUnavailableException.
+ *    - Students can cancel their reservation when they no longer need the room.
+ * 
+ * --- Non-Functional Requirements (How the System Works) ---
+ * 1. Ease of Use:
+ *    - The interface should be simple and intuitive, requiring minimal effort to navigate.
+ * 
+ * 2. Performance:
+ *    - The system should respond to booking and availability requests within seconds.
+ * 
+ * 3. Scalability:
+ *    - It should be able to support an increasing number of rooms and student users.
+ * 
+ * 4. Reliability:
+ *    - The system should be available with minimal downtime to ensure students can always access it.
+ * 
+ * 5. Security:
+ *    - Only verified students should be able to book rooms to prevent misuse.
+ * 
+ * 6. Maintainability:
+ *    - The system should be designed to allow easy updates and new feature additions.
+ * 
+ */
+
 import java.util.ArrayList;
 
 /**
